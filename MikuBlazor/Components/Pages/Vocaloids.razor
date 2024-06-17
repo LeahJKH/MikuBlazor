@@ -1,0 +1,37 @@
+﻿@page "/Vocaloids"
+<h3>vocaloids</h3>
+<button @onclick="FetchData">Click too render</button>
+
+@if (apiBuilder.Count != 0)
+{
+    for (int i = 0; i < 2; i++)
+    {
+
+        <div class="vocaloidBox">
+            <p>@apiBuilder[i].name</p>
+            <p>@apiBuilder[i].codename</p>
+            <p>@apiBuilder[i].version</p>
+            <img src=@apiBuilder[i].imgLink />
+        </div>
+    }
+
+}
+
+else
+{
+    return;
+}
+
+@code {
+    string url = "https://leahjkh.github.io/MikuApiGithub/json/mikuVersions.json";
+
+    List<Apibuilder> apiBuilder = new();
+    public HttpClient httpClient = new();
+
+    public async Task FetchData()
+    {
+        apiBuilder = await httpClient.GetFromJsonAsync<List<Apibuilder>>(url);
+        Console.WriteLine(apiBuilder);
+    }
+
+}
